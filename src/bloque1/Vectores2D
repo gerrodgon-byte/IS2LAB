@@ -1,0 +1,56 @@
+'''
+Created on 15 oct 2025
+
+@author: Gerard(US)
+'''
+from __future__ import annotations 
+from dataclasses import dataclass
+from math import sqrt, atan2, sin, cos, radians
+@dataclass(frozen = True, order = True) # Inmutable, comparable
+class Vector2D:
+    # Propiedades básicas
+    x:float
+    y:float
+    
+    
+    # Métodos de factoría
+    @staticmethod 
+    def of(x:float, y:float) -> Vector2D:
+        return Vector2D(x, y)
+    
+    @staticmethod
+    def parse(cad: str) ->Vector2D:
+        cad = cad[1:-1]
+        x, y = cad.split(",")
+        return Vector2D(float(x), float(y))
+    
+    @staticmethod
+    def of_radianes(modulo:float, angulo:float) -> Vector2D:
+        assert modulo >=0, 'El módulo tiene que ser mayor o igual que cero'
+        x:float = modulo*cos(angulo)
+        y:float = modulo*sin(angulo)
+        return Vector2D.of(x, y)
+    
+    @staticmethod
+    def of_grados(modulo:float, angulo:float) -> Vector2D:
+        return Vector2D.of_radianes(modulo, radians(angulo))
+    
+    
+    # Propiedades derivadas
+    @property
+    def modulo(self) -> float:
+        return sqrt((self.x**2)+(self.y**2))
+    
+
+    @property 
+    def angulo(self) -> float:
+        return atan2(self.y, self.x)
+
+
+    def __str__(self) -> str:   # Método de representación como cadena
+        return f"({self.x:.2f}, {self.y:.2f})"
+if __name__ == '__main__':
+    v: Vector2D = Vector2D(-54.3 , -24.0)
+    #print(v)   
+    #print(v.x)
+    #print(v.modulo)
